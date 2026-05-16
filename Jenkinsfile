@@ -7,7 +7,8 @@ pipeline {
         APP_NAME     = 'benefits'
         TARGETS      = 'JVM1' 
         
-        // FIX: Just use the filename. Jenkins clones this from GitHub into its active workspace automatically.
+        // FIX: Just use the filename. Jenkins clones this from GitHub 
+        // into its active /var/lib/jenkins/workspace/ folder automatically.
         WAR_FILE     = 'benefits.war'  
     }
 
@@ -24,7 +25,7 @@ pipeline {
                                                  usernameVariable: 'WLS_USER', 
                                                  passwordVariable: 'WLS_PASS')]) {
                     
-                    // FIX: Changing to triple single-quotes (''') stops Groovy from breaking the <(bash) syntax
+                    // FIX: Changing to triple single-quotes (''') stops Groovy from breaking the Bash syntax
                     sh '''
                         #!/bin/bash
                         
