@@ -22,7 +22,11 @@ pipeline {
                                                  usernameVariable: 'WLS_USER', 
                                                  passwordVariable: 'WLS_PASS')]) {
                     sh """
-                        source  <(bash /home/vinay/Oracle/Middleware/Oracle_Home/user_projects/domains/base_domain/bin/setDomainEnv.sh)
+                        #!/bin/bash
+                        # Force Jenkins to use Bash instead of default POSIX sh
+                        
+                        # 1. Source the environment via Bash process substitution
+                        source <(bash /home/vinay/Oracle/Middleware/Oracle_Home/user_projects/domains/base_domain/bin/setDomainEnv.sh)
 
                         java -cp ${WEBLOGIC_JAR} weblogic.Deployer \
                         -adminurl ${ADMIN_URL} \
