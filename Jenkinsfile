@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        WEBLOGIC_JAR = '/home/vinay/Oracle/Middleware/Oracle_Home/wlserver/server/lib/weblogic.jar' // <-- Change this
+        WEBLOGIC_JAR = '/home/vinay/Oracle/Middleware/Oracle_Home/wlserver/server/lib/wldeploy.jar' // <-- Change this
         ADMIN_URL    = 't3://192.168.32.128:7001'
         APP_NAME     = 'benefits'
         TARGETS      = 'JVM1' // <-- Change this if needed
