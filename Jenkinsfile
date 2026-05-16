@@ -5,14 +5,12 @@ pipeline {
         WEBLOGIC_JAR = '/home/vinay/Oracle/Middleware/Oracle_Home/wlserver/server/lib/weblogic.jar'
         ADMIN_URL    = 't3://192.168.32.128:7001'
         APP_NAME     = 'benefits'
-        TARGETS      = 'JVM1' 
-        
-        // FIX: Just use the filename. Jenkins clones this from GitHub 
-        // into its active /var/lib/jenkins/workspace/ folder automatically.
-        WAR_FILE     = 'benefits.war'  
+        TARGETS      = 'JVM1'
+        WAR_FILE     = 'benefits.war'
     }
 
     stages {
+
         stage('Checkout from GitHub') {
             steps {
                 checkout scm
@@ -21,25 +19,35 @@ pipeline {
 
         stage('Deploy to WebLogic') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'weblogic-admin-creds', 
-                                                 usernameVariable: 'WLS_USER', 
-                                                 passwordVariable: 'WLS_PASS')]) {
-                    
-                    // FIX: Changing to triple single-quotes (''') stops Groovy from breaking the Bash syntax
+
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'weblogic-admin-creds',
+                        usernameVariable: 'WLS_USER',
+                        passwordVariable: 'WLS_PASS'
+                    )
+                ]) {
+
                     sh '''
                         #!/bin/bash
-                        
-                        # 1. Source the environment via Bash process substitution safely
-                        source <(bash /home/vinay/Oracle/Middleware/Oracle_Home/user_projects/domains/base_domain/bin/setDomainEnv.sh)
-                        
-                        # 2. Execute WebLogic deployer natively using the loaded environment classpaths
-                        java weblogic.Deployer \
+
+                        echo "Current Workspace:"
+                        pwd
+
+                        echo "Files in Workspace:"
+                        ls -ltr
+
+                        # Source WebLogic Environment
+                        source /home/vinay/Oracle/Middleware/Oracle_Home/user_projects/domains/base_domain/bin/setDomainEnv.sh
+
+                        # Deploy WAR
+                        java -cp "${WEBLOGIC_JAR}" weblogic.Deployer \
                         -adminurl "${ADMIN_URL}" \
                         -username "${WLS_USER}" \
                         -password "${WLS_PASS}" \
                         -deploy \
                         -name "${APP_NAME}" \
-                        -source "${WAR_FILE}" \
+                        -source "${WORKSPACE}/${WAR_FILE}" \
                         -targets "${TARGETS}" \
                         -verbose
                     '''
@@ -48,4 +56,3 @@ pipeline {
         }
     }
 }
-
