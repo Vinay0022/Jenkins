@@ -2,11 +2,11 @@ pipeline {
     agent any
 
     environment {
-        WEBLOGIC_JAR = '/home/vinay/Oracle/Middleware/Oracle_Home/wlserver/server/lib/wldeploy.jar' // <-- Change this
+        WEBLOGIC_JAR = '/home/vinay/Oracle/Middleware/Oracle_Home/wlserver/server/lib/weblogic.jar' // <-- Change this
         ADMIN_URL    = 't3://192.168.32.128:7001'
         APP_NAME     = 'benefits'
         TARGETS      = 'JVM1' // <-- Change this if needed
-        WAR_FILE     = 'benefits.war'  // <-- Change to your exact file name
+        WAR_FILE     = '/home/vinay/Jenkins/benefits.war'  // <-- Change to your exact file name
     }
 
     stages {
@@ -26,7 +26,7 @@ pipeline {
                         -adminurl ${ADMIN_URL} \
                         -username ${WLS_USER} \
                         -password ${WLS_PASS} \
-                        -redeploy \
+                        -deploy \
                         -name ${APP_NAME} \
                         -source ${WAR_FILE} \
                         -targets ${TARGETS} \
