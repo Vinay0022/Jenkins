@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        WEBLOGIC_JAR = '/home/vinay/Jenkins/benefits.war' // <-- Change this
+        WEBLOGIC_JAR = '/home/vinay/Oracle/Middleware/Oracle_Home/wlserver/server/lib/weblogic.jar' // <-- Change this
         ADMIN_URL    = 't3://192.168.32.128:7001'
-        APP_NAME     = 'my-web-app'
+        APP_NAME     = 'benefits'
         TARGETS      = 'JVM1' // <-- Change this if needed
         WAR_FILE     = 'benefits.war'  // <-- Change to your exact file name
     }
